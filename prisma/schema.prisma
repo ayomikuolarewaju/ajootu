@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String              @id @default(uuid())
+  name            String
+  email           String            
+  createdAt       DateTime          @default(now())
+
+  group           Group[]
+  memberships     Member[]
+  groupActivities GroupActivity[]
+  invitations     GroupInvitation[] @relation("InvitedUser")
+  joinRequests    JoinRequest[]
+
+  GroupInvitation GroupInvitation[] @relation("InvitedBy")
+}
+
+model Group {
+  id              String                @id @default(uuid())
+  name            String
+  description     String?
+  role            String?
+  avatar          String?
+  color           String?
+  lastActivity    String?
+  isPrivate       Boolean?
+  createdAt       DateTime           @default(now())
+
+  creatorId       String
+  creator         User               @relation( fields: [creatorId], references: [id])
+
+  members         Member[]
+  
+  avatarActivityId String?
+  avatarActivity  GroupActivity?     @relation( fields: [avatarActivityId], references: [id])
+  roles           Member_Role
+  invitations     GroupInvitation[]
+  joinRequests    JoinRequest[]
+}
+
+enum Member_Role {
+  Admin
+  Moderator
+  Member
+}
+
+model Member {
+  id        String      @id @default(uuid())
+  userId    String
+  groupId   String
+  
+  joinedAt  DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  group     Group    @relation(fields: [groupId], references: [id])
+ 
+
+  role      Member_Role @default(Member)
+
+  @@unique([userId, groupId])
+}
+
+model GroupActivity {
+  id           String       @id @default(uuid())
+  
+  userId       String?      // Optional: system actions
+  action       String
+  target       String?
+  activityType String?
+  time         DateTime  @default(now())
+
+  
+  user         User?     @relation(fields: [userId], references: [id])
+  groups        Group[]
+}
+
+
+
+model GroupInvitation {
+  id           String      @id @default(uuid())
+  groupId      String
+  invitedUserId String
+  invitedById  String
+  roleId       String?     // optional default role if accepted
+  status       String   @default("pending") // pending, accepted, rejected
+  createdAt    DateTime @default(now())
+  respondedAt  DateTime?
+
+  group        Group    @relation(fields: [groupId], references: [id])
+  invitedUser  User     @relation("InvitedUser", fields: [invitedUserId], references: [id])
+  invitedBy    User     @relation("InvitedBy", fields: [invitedById], references: [id])
+  
+}
+
+model JoinRequest {
+  id         String      @id @default(uuid())
+  groupId    String
+  userId     String
+  message    String?
+  status     String   @default("pending") // pending, approved, rejected
+  createdAt  DateTime @default(now())
+  decidedAt  DateTime?
+
+  group      Group    @relation(fields: [groupId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+
