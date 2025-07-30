@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
-
+import CreateGroupModal from './CreateGroupModal';
 import GroupCard from './GroupCard';
 
 const mockGroups = [
@@ -203,11 +203,11 @@ export default function Groups() {
         </div>
       </div>
 
-{/*       <CreateGroupModal 
+      <CreateGroupModal 
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
       />
- */}
+
       <Footer />
     </div>
   );
