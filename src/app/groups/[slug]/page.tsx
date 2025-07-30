@@ -87,14 +87,14 @@ const SlugPage = ()=> {
 
   console.log(slugmain)
 
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'Admin': return 'bg-red-100 text-red-700';
-      case 'Member': return 'bg-blue-100 text-blue-700';
-      case 'Viewer': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
+  // const getRoleColor = (role: string) => {
+  //   switch (role) {
+  //     case 'Admin': return 'bg-red-100 text-red-700';
+  //     case 'Member': return 'bg-blue-100 text-blue-700';
+  //     case 'Viewer': return 'bg-gray-100 text-gray-700';
+  //     default: return 'bg-gray-100 text-gray-700';
+  //   }
+  // };
 
   return (
     <div className='bg-white flex flex-col h-screen w-full '>
@@ -113,7 +113,7 @@ const SlugPage = ()=> {
                 </div>
               )}
             </div>
-            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(slugmain?.role)}`}>
+            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium `}>
               {slugmain?.role}
             </span>
           </div>
