@@ -203,11 +203,11 @@ export default function Groups() {
         </div>
       </div>
 
-      <CreateGroupModal 
+{/*       <CreateGroupModal 
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
       />
-
+ */}
       <Footer />
     </div>
   );
